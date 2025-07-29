@@ -41,8 +41,19 @@
 
       bookImg.addEventListener('dblclick', (e) => {
         e.preventDefault();
-        bookImg.classList.add('favorite');
-        favouriteBooks.push(bookImg.getAttribute('data-id'));
+
+        if(bookImg.classList.contains('favorite')){
+          bookImg.classList.remove('favorite');
+
+          const index = favouriteBooks.indexOf(bookImg.getAttribute('data-id'));
+
+          if(index !== -1){
+            favouriteBooks.splice(index, 1);
+          }
+        } else {
+          bookImg.classList.add('favorite');
+          favouriteBooks.push(bookImg.getAttribute('data-id'));
+        }
       });
 
     }
