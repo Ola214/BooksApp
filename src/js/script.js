@@ -23,39 +23,12 @@
     }
   };
 
-  const favouriteBooks = [];
-
   class Book {
     constructor(id, data) {
       const thisBook = this;
       thisBook.id = id;
       thisBook.data = data;
       thisBook.render();
-      thisBook.initActions();
-    }
-
-    initActions() {
-      const book = this;
-
-      const bookImg = book.element.querySelector('.book__image');
-
-      bookImg.addEventListener('dblclick', (e) => {
-        e.preventDefault();
-
-        if(bookImg.classList.contains('favorite')){
-          bookImg.classList.remove('favorite');
-
-          const index = favouriteBooks.indexOf(bookImg.getAttribute('data-id'));
-
-          if(index !== -1){
-            favouriteBooks.splice(index, 1);
-          }
-        } else {
-          bookImg.classList.add('favorite');
-          favouriteBooks.push(bookImg.getAttribute('data-id'));
-        }
-      });
-
     }
 
     render() {
@@ -71,13 +44,55 @@
     }
   }
 
+  class Books {
+
+    constructor(books) {
+      const thisBooks = this;
+      thisBooks.books = books;
+      thisBooks.favouriteBooks = [];
+
+      thisBooks.initActions();
+    }
+
+    initActions() {
+      const booksList = document.querySelector('.books-list');
+
+      booksList.addEventListener('dblclick', (e) => {
+        e.preventDefault();
+
+        const bookImage = e.target.offsetParent;
+
+        console.log('bookImage', bookImage);
+
+        if(bookImage.classList.contains('book__image')){ //offsetParent odwołanie do elementu, który jest najbliższym elementem przodka o określonej pozycji
+          if(bookImage.classList.contains('favorite')){
+            bookImage.classList.remove('favorite');
+
+            const index = this.favouriteBooks.indexOf(bookImage.getAttribute('data-id'));
+
+            if(index !== -1){
+              this.favouriteBooks.splice(index, 1);
+            }
+          } else {
+            bookImage.classList.add('favorite');
+            this.favouriteBooks.push(bookImage.getAttribute('data-id'));
+          }
+        }
+      });
+    }
+  }
+
+
   const app = {
     initMenu: function() {
       const thisApp = this;
 
+      const bookList = [];
+
       for(let bookData in thisApp.data.books) {
-        new Book(thisApp.data.books[bookData].id, thisApp.data.books[bookData]);
+        bookList.push(new Book(thisApp.data.books[bookData].id, thisApp.data.books[bookData]));
       }
+      new Books(bookList);
     },
     initData: function() {
       const thisApp = this;
