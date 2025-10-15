@@ -144,8 +144,13 @@
 
   }
 
-  const app = {
-    initMenu: function() {
+  class BooksList {
+    constructor() {
+      const thisApp = this;
+      thisApp.initData();
+    }
+
+    initMenu() {
       const thisApp = this;
 
       const bookList = [];
@@ -154,8 +159,9 @@
         bookList.push(new Book(thisApp.data.books[bookData].id, thisApp.data.books[bookData]));
       }
       new Books(bookList);
-    },
-    initData: function() {
+    }
+
+    initData() {
       const thisApp = this;
       thisApp.data = {};
       const url = settings.db.url + '/' + settings.db.books;
@@ -168,12 +174,41 @@
           thisApp.data.books = parseResponse;
           thisApp.initMenu();
         });
-    },
-    init: function() {
-      const thisApp = this;
-      thisApp.initData();
-    },
-  };
+    }
+  }
 
-  app.init();
+  new BooksList();
+
+  // const app2 = {
+  //   initMenu: function() {
+  //     const thisApp = this;
+
+  //     const bookList = [];
+
+  //     for(let bookData in thisApp.data.books) {
+  //       bookList.push(new Book(thisApp.data.books[bookData].id, thisApp.data.books[bookData]));
+  //     }
+  //     new Books(bookList);
+  //   },
+  //   initData: function() {
+  //     const thisApp = this;
+  //     thisApp.data = {};
+  //     const url = settings.db.url + '/' + settings.db.books;
+
+  //     fetch(url)
+  //       .then(function(rawRespionse){
+  //         return rawRespionse.json();
+  //       })
+  //       .then(function(parseResponse){
+  //         thisApp.data.books = parseResponse;
+  //         thisApp.initMenu();
+  //       });
+  //   },
+  //   init: function() {
+  //     const thisApp = this;
+  //     thisApp.initData();
+  //   },
+  // };
+
+  // app2.init();
 }
